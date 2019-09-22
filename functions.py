@@ -26,7 +26,7 @@ class Sqrt(function_node.FunctionNode):
 class SqrtGrad(function_node.FunctionNode):
     def __init__(self):
         super(SqrtGrad, self).__init__()
-        
+
     def forward(self, inputs):
         self.retain_inputs((0, 1))
         y, gy = inputs
@@ -63,7 +63,7 @@ class RSqrt(function_node.FunctionNode):
 class RSqrtGrad(function_node.FunctionNode):
     def __init__(self):
         super(RSqrtGrad, self).__init__()
-        
+
     def forward(self, inputs):
         self.retain_inputs((0, 1))
         y, gy = inputs

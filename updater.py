@@ -26,19 +26,19 @@ class WganGpUpdater(chainer.training.StandardUpdater):
 
         z = self.gen.z(m)
         x_tilde = self.gen(z, self.alpha).data
-        
+
         epsilon = xp.random.rand(m, 1, 1, 1).astype('f')
         x_hat = Variable(epsilon * x + (1 - epsilon) * x_tilde)
 
         dis_x = self.dis(x, self.alpha)
-        
+
         loss_d = self.dis(x_tilde, self.alpha) - dis_x
 
         g_d, = chainer.grad([self.dis(x_hat, self.alpha)], [x_hat], enable_double_backprop=True)
         g_d_norm = F.sqrt(F.batch_l2_norm_squared(g_d) + 1e-6)
         g_d_norm_delta = g_d_norm - 1
         loss_l = self.lam * g_d_norm_delta * g_d_norm_delta
-        
+
         loss_dr = self.epsilon_drift * dis_x * dis_x
 
         dis_loss = F.mean(loss_d + loss_l + loss_dr)
@@ -46,7 +46,7 @@ class WganGpUpdater(chainer.training.StandardUpdater):
         self.dis.cleargrads()
         dis_loss.backward()
         opt_d.update()
-        
+
         # update generator
         z = self.gen.z(m)
         x = self.gen(z, self.alpha)

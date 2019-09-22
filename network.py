@@ -16,7 +16,7 @@ class Layer(Chain):
         self.eps = 1e-8
 
         self.normalize = normalize
-        
+
     def __call__(self, x):
         h = x * self.c
         h = self.conv(h)
@@ -88,7 +88,7 @@ class Generator(Chain):
             h2 = F.unpooling_2d(h1, 2, 2, outsize=self['b%d'%self.depth].outsize)
             h3 = self['b%d'%(self.depth-1)].toRGB(h2)
             h4 = self['b%d'%self.depth](h1, True)
-            
+
             h = h3 * (1 - alpha) + h4 * alpha
         else:
             h = x
@@ -96,9 +96,9 @@ class Generator(Chain):
                 h = self['b%d'%i](h)
 
             h = self['b%d'%self.depth](h, True)
-        
+
         return h
-    
+
 class DBlock(Chain):
     def __init__(self, ch_in, ch_out):
         super(DBlock, self).__init__(
@@ -120,7 +120,7 @@ class DBlock(Chain):
 class MinibatchStddev(Link):
     def __init__(self, ch):
         super(MinibatchStddev, self).__init__()
-        
+
         self.eps = 1.0
 
     def __call__(self, x):
@@ -177,7 +177,7 @@ class Discriminator(Chain):
             h = h2 * (1 - alpha) + h1 * alpha
         else:
             h = self['b%d'%(7-self.depth)](x, True)
-                
+
         for i in range(self.depth):
             h = self['b%d'%(7-self.depth+1+i)](h)
 
