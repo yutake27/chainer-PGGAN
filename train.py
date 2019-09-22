@@ -13,10 +13,11 @@ import utils
 from updater import WganGpUpdater
 import os
 import shutil
+import chainermn
 
 def train():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--gpu', '-g', type=int, default=0)
+    parser.add_argument('--gpu', '-g', type=int, default=-1)
     parser.add_argument('--dir', type=str, default='./train_images/')
     parser.add_argument('--gen', type=str, default=None)
     parser.add_argument('--dis', type=str, default=None)
@@ -38,8 +39,15 @@ def train():
     train = dataset.ImageDataset(directory=args.dir, depth=args.depth)
     train_iter = iterators.MultiprocessIterator(train, batch_size=args.batch, repeat=True, shuffle=True, n_processes=14)
 
-    import chainermn
-    comm = chainermn.create_communicator(args.communicator)
+    if args.gpu >= 0:
+        comm = chainermn.create_communicator(args.communicator)
+        device = comm.intra_rank
+        cuda.get_device_from_id(device).use()
+        gen.to_gpu()
+        dis.to_gpu()
+    else:
+        comm = chainermn.create_communicator('naive')
+        device = -1
 
     gen = network.Generator(depth=args.depth)
     if args.gen is not None:
