@@ -11,6 +11,8 @@ and add support for multi gpu with chainermn
 
  `cuda 9.2.148`
 
+ `cudnn 7.4`
+
  `openmpi 2.1.2-opa10.9`
 
  `nccl 2.4.2`
