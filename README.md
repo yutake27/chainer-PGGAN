@@ -1,44 +1,53 @@
-# chainer-PGGAN
- Progressive Growing of GANs implemented with chainer
+# PGGAN
 
- `python 3.5.2` + `chainer 3.0.0`
+clone from https://github.com/joisino/chainer-PGGAN
+and add support for multi gpu with chainermn
+
+### Progressive Growing of GANs implemented with chainer
+
+ `python 3.6.8`
+
+ `chainer 6.0.0`
+
+ `cuda 9.2.148`
+
+ `openmpi 2.1.2-opa10.9`
+
+ `nccl 2.4.2`
+
 
 ## Usage
 
 ### Training
 
 ```
-$ python3 ./train.py -g 0 --dir ./train_images/ --epoch 100 --depth 0 
+python ./train.py -g 0 --dir ./train_images/ --epoch 100 --depth 0
 ```
-
-You can train models with `./train.py`.
 
 When `depth = n`, generated images are `2^{n+2} x 2^{n+2}` size.
 
+If you have multi gpu,
 ```
-$ ./batch.sh 100
+mpiexec -n GPU_NUM ./train.py -g 0 --dir ./train_images/ --epoch 100 --depth 0
+```
+
+Please put the number of gpu in `NUM_GPU`.
+
+```
+$ ./batch.sh NUM_GPU 100 ./train_images
 ```
 
 `batch.sh` automatically trains models gradually (through `4 x 4` to `256 x 256`).
+
 
 You should tune `delta` and `epoch` when it changes too quickly or too slowly.
 
 ### Generating
 
 ```
-$ python3 ./analogy.py --gen results/gen --depth 0
+$ python ./generate.py --gen GEN_MODEL_PATH --depth 0
 ```
 
-You can generate images with `analogy.py`
-
-```
-$ wget https://www.dropbox.com/s/dvnxb4vur6fasei/gen_yui_model
-$ python3 ./analogy.py --gen gen_yui_model --depth 6
-```
-
-You can use the pre-trained model.
-
-It generates `256 x 256` size Ichii Yui's images.
 
 ## Bibliography
 
@@ -50,6 +59,6 @@ The original paper
 
 WGAN-GP implemented with chainer.
 
-[3] http://joisino.hatenablog.com/entry/2017/11/07/200000
+[3] https://github.com/joisino/chainer-PGGAN
 
-My Blog post related to this repository.
+PGGAN implementated with chainer.
