@@ -91,7 +91,6 @@ public class drawing extends Application {
     generate1.setBorder(border);
     generate1.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), Insets.EMPTY)));
     generate1.setOnAction(e->{
-      System.out.println(seed);
       ExecutorService service = Executors.newSingleThreadExecutor();
       Thread thread = new Thread(()->ganMethod1());
       service.execute(thread);
@@ -102,7 +101,6 @@ public class drawing extends Application {
     generate2.setBorder(border);
     generate2.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), Insets.EMPTY)));
     generate2.setOnAction(e->{
-      System.out.println(seed);
       ExecutorService service = Executors.newSingleThreadExecutor();
       Thread thread = new Thread(()->ganMethod2());
       service.execute(thread);

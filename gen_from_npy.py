@@ -15,7 +15,7 @@ from pathlib import Path
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--gpu', '-g', type=int, default=-1)
-    parser.add_argument('--gen', type=str, default="gen6", help='input generate model path')
+    parser.add_argument('--gen', type=str, default="predicted_model", help='input generate model path')
     parser.add_argument('--depth', '-d', type=int, default=6)
     parser.add_argument('--out', '-o', type=str, default='out/out.png')
     parser.add_argument('--seed', '-s', type=int, default=255)

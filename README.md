@@ -47,8 +47,30 @@ You should tune `delta` and `epoch` when it changes too quickly or too slowly.
 ### Generating
 
 ```
-$ python ./generate.py --gen GEN_MODEL_PATH --depth 0
+$ python ./generate.py --gen GEN_MODEL_PATH --depth 6
 ```
+
+[predicted model is here](https://github.com/yutake27/chainer-PGGAN/blob/master/predicted_model)
+### software
+
+```
+$ javac drawing.java
+$ java drawing
+```
+
+![software_sample](https://github.com/yutake27/chainer-PGGAN/blob/master/sample_image/sample.png)
+
+
+#### Button
+* generate1: Generate image to left canvas
+* generate2: Generate image to center canvas
+* mix: Mix the left and center canvas images
+
+#### Slider
+* size: Gradually get bigger
+* structure: Gradually change from alpha structure to beta structure
+* color: Gradually becoming colorful
+* seed: Seed value
 
 
 ## Bibliography

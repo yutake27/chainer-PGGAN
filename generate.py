@@ -14,7 +14,7 @@ from pathlib import Path
 def generate():
     parser = argparse.ArgumentParser()
     parser.add_argument('--gpu', '-g', type=int, default=-1)
-    parser.add_argument('--gen', type=str, default="gen6", help='input generate model path')
+    parser.add_argument('--gen', type=str, default="predicted_model", help='input generate model path')
     parser.add_argument('--depth', '-d', type=int, default=6)
     parser.add_argument('--out', '-o', type=str, default='out/gen.png')
     parser.add_argument('--num', '-n', type=int, default=7)
