@@ -53,16 +53,14 @@ public class drawing extends Application {
   final int SIZE = 512;
   Button clear;
   Label state_Label = new Label();
-  Stack<Image> backsnap = new Stack<>();// back用
-  Stack<Image> gosnap = new Stack<>(); // go用
-  int seed=255, size=400, structure=1, color=1, mix_num=3;
+  int seed=255, size=1, structure=1, color=1, mix_num=3;
 
   /**
    * お絵描きプログラムの準備をして、ウィンドウを開きます
    */
   public void start(Stage stage) {
     canvas = new Canvas(SIZE, SIZE);
-    center_canvas = new Canvas(15, SIZE);
+    center_canvas = new Canvas(30, SIZE);
     left_canvas = new Canvas(30, SIZE);
     out_canvas = new Canvas(SIZE, SIZE);
     int gan_size = 256;
@@ -206,8 +204,10 @@ public class drawing extends Application {
     VBox mix_vb = new VBox();
     mix_vb.setAlignment(Pos.CENTER);
     mix_vb.getChildren().addAll(mix, mix_canvas, mix_Slider);
+    HBox mix_hb = new HBox();
+    mix_hb.getChildren().addAll(center_canvas, mix_vb);
     bp.setLeft(gen_vb);
-    bp.setRight(mix_vb);
+    bp.setRight(mix_hb);
 
     Scene scene = new Scene(bp);
     stage.setScene(scene);
@@ -219,14 +219,13 @@ public class drawing extends Application {
   private void ganMethod1(){
     String [] cmd = {"python", "gen_from_npy.py", "--out", "out/1.png", "--seed", String.valueOf(seed),
         "--size", String.valueOf(size), "--structure", String.valueOf(structure), "--color", String.valueOf(color)};
-    File cmd_dir = new File("/Users/TAKEI/Desktop/chainer-PGGAN");
     try {
-      Process p1 = Runtime.getRuntime().exec(cmd, null, cmd_dir);
+      Process p1 = Runtime.getRuntime().exec(cmd, null);
       p1.waitFor();
     } catch (IOException | InterruptedException e2) {
       e2.printStackTrace();
     }
-    File out_File = new File("/Users/TAKEI/Desktop/chainer-PGGAN/out/1.png");
+    File out_File = new File("./out/1.png");
     Image out_image = new Image(out_File.toURI().toString());
     Platform.runLater(()-> gan_gc1.drawImage(out_image, 0, 0));
   }
@@ -234,28 +233,26 @@ public class drawing extends Application {
   private void ganMethod2(){
     String [] cmd = {"python", "gen_from_npy.py", "--out", "out/2.png", "--seed", String.valueOf(seed),
         "--size", String.valueOf(size), "--structure", String.valueOf(structure), "--color", String.valueOf(color)};
-    File cmd_dir = new File("/Users/TAKEI/Desktop/chainer-PGGAN");
     try {
-      Process p1 = Runtime.getRuntime().exec(cmd, null, cmd_dir);
+      Process p1 = Runtime.getRuntime().exec(cmd, null);
       p1.waitFor();
     } catch (IOException | InterruptedException e2) {
       e2.printStackTrace();
     }
-    File out_File = new File("/Users/TAKEI/Desktop/chainer-PGGAN/out/2.png");
+    File out_File = new File("./out/2.png");
     Image out_image = new Image(out_File.toURI().toString());
     Platform.runLater(()-> gan_gc2.drawImage(out_image, 0, 0));
   }
 
   private void mix_ganMethod(){
-    String [] cmd = {"python", "generate_opt.py", "--out", "out/mix.png", "--vector_ope", "out/1.npy", "out/2.npy"};
-    File cmd_dir = new File("/Users/TAKEI/Desktop/chainer-PGGAN");
+    String [] cmd = {"python", "generate.py", "--out", "out/mix.png", "--vector_ope", "out/1.npy", "out/2.npy"};
     try {
-      Process p1 = Runtime.getRuntime().exec(cmd, null, cmd_dir);
+      Process p1 = Runtime.getRuntime().exec(cmd, null);
       p1.waitFor();
     } catch (IOException | InterruptedException e2) {
       e2.printStackTrace();
     }
-    File out_File = new File("/Users/TAKEI/Desktop/chainer-PGGAN/out/mix"+String.valueOf(mix_num)+".png");
+    File out_File = new File("./out/mix"+String.valueOf(mix_num)+".png");
     Image out_image = new Image(out_File.toURI().toString());
     Platform.runLater(()-> mix_gc.drawImage(out_image, 0, 0));
   }
